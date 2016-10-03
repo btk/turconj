@@ -1,0 +1,13 @@
+{
+  "name": "turconj",
+  "version": "1.0.2",
+  "description": "A command-line tool to conjunct Turkish verbs with given tence and possessive.",
+  "author": "Burak Tokak",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "dependencies": {},
+  "bin": {
+    "turconj": "turconj.js"
+  }
+}
