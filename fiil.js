@@ -26,6 +26,22 @@ const sesliHarf = ["a", "e", "ı", "i", "o", "ö", "u", "ü"];
 
 const possessors = ["ben", "sen", "o", "biz", "siz", "onlar"];
 
+var fiilArr = [
+"aç",
+"açıl",
+"ağla",
+"ak",
+"al",
+"anla",
+"ara",
+"art",
+"aş",
+"atıl",
+"ayır",
+"çöz"
+];
+
+
 function lastSesliHarf(fiil) {
   var i = 1;
   while (!sesliHarf.contains(fiil[fiil.length - i])) {
@@ -170,21 +186,13 @@ function fiilCek(fiil, cekimEki) {
       - also: add "y" to the verbs ends with a vwl letter
       before adding addition.
       */
-      if (fiil == "kullan") { return "kullanır"; }
-      if (lastHarf(fiil) == lastSesliHarf(fiil)) {
-        return fiil + "r";
-      }
       if (lastHarfPlain(fiil) == "t" && sesliHarf.contains(fiil[fiil.length - 2])) {
         fiil = fiil.substring(0, fiil.length - 1) + "d";
       }
-      if (lsh == "a" || lsh == "ı") {
-        return fiil + ek.haber[cekimEki][4] + "(*)";
-      } else if (lsh == "e" || lsh == "i") {
-        return fiil + ek.haber[cekimEki][5] + "(*)";
-      } else if (lsh == "ö" || lsh == "ü") {
-        return fiil + ek.haber[cekimEki][3] + "(*)";
-      } else if (lsh == "o" || lsh == "u") {
-        return fiil + ek.haber[cekimEki][2] + "(*)";
+      if (lastHarf(fiil) == lastSesliHarf(fiil)) {
+        return fiil + "r";
+      } else {
+        return fiil + lastSesliHarf(fiil) + "r" + "*";
       }
 
     } //Switch
@@ -255,39 +263,23 @@ function fiilCek(fiil, cekimEki) {
 }
 
 
-var fiilArr = [
-"aç",
-"açıl",
-"ağla",
-"ak",
-"al",
-"anla",
-"anlat",
-"ara",
-"art",
-"aş",
-"atıl",
-"ayır",
-"çöz"
-];
-
-
 function addPossessive(verb, possessor, cekimEki) {
+  let lsh = lastSesliHarf(verb);
+  let add = multipleCheck(lsh, ["a", "ı", "o", "u"]) ? "ı" : "i";
   switch (possessor) {
   case possessors[0]:
     if (cekimEki == "gorGecZam") {
       return verb + "m";
     } else if (cekimEki == "ogrGecZam") {
-      return verb + lastSesliHarf(verb) + "m";
+      return verb + lsh + "m";
     } else if (cekimEki == "simZam") {
       return verb + "um";
     } else if (cekimEki == "gelZam") {
-      let add = lastSesliHarf(verb) == "a" ? "i" : "ı";
       return verb.substring(0, verb.length - 1) + "ğ" + add + "m";
     } else if (cekimEki == "genZam") {
-      return verb + lastSesliHarf(verb) + "m";
+      return verb + add + "m";
     } else if (cekimEki == "gerKip") {
-      return verb + "y" + lastSesliHarf(verb) + "m";
+      return verb + "y" + lsh + "m";
     } else if (cekimEki == "dilKip") {
       return verb + "m";
     } else if (cekimEki == "istKip") {
@@ -299,16 +291,15 @@ function addPossessive(verb, possessor, cekimEki) {
     if (cekimEki == "gorGecZam") {
       return verb + "n";
     } else if (cekimEki == "ogrGecZam") {
-      return verb + "s" + lastSesliHarf(verb) + "n";
+      return verb + "s" + lsh + "n";
     } else if (cekimEki == "simZam") {
       return verb + "sun";
     } else if (cekimEki == "gelZam") {
-      let add = lastSesliHarf(verb) == "a" ? "ı" : "i";
       return verb.substring(0, verb.length - 1) + "ğ" + add + "n";
     } else if (cekimEki == "genZam") {
-      return verb + "s" + lastSesliHarf(verb) + "n";
+      return verb + "s" + add + "n";
     } else if (cekimEki == "gerKip") {
-      return verb + "s" + lastSesliHarf(verb) + "n";
+      return verb + "s" + lsh + "n";
     } else if (cekimEki == "dilKip") {
       return verb + "n";
     } else if (cekimEki == "istKip") {
@@ -322,16 +313,15 @@ function addPossessive(verb, possessor, cekimEki) {
     if (cekimEki == "gorGecZam") {
       return verb + "k";
     } else if (cekimEki == "ogrGecZam") {
-      return verb + lastSesliHarf(verb) + "z";
+      return verb + lsh + "z";
     } else if (cekimEki == "simZam") {
       return verb + "uz";
     } else if (cekimEki == "gelZam") {
-      let add = lastSesliHarf(verb) == "a" ? "ı" : "i";
       return verb.substring(0, verb.length - 1) + "ğ" + add + "z";
     } else if (cekimEki == "genZam") {
-      return verb + lastSesliHarf(verb) + "z";
+      return verb + add + "z";
     } else if (cekimEki == "gerKip") {
-      return verb + "y" + lastSesliHarf(verb) + "z";
+      return verb + "y" + lsh + "z";
     } else if (cekimEki == "dilKip") {
       return verb + "k";
     } else if (cekimEki == "istKip") {
@@ -341,33 +331,30 @@ function addPossessive(verb, possessor, cekimEki) {
     }
   case possessors[4]:
     if (cekimEki == "gorGecZam") {
-      return verb + "n" + lastSesliHarf(verb) + "z";
+      return verb + "n" + lsh + "z";
     } else if (cekimEki == "ogrGecZam") {
-      return verb + "s" + lastSesliHarf(verb) + "n" + lastSesliHarf(verb) + "z";
+      return verb + "s" + lsh + "n" + lsh + "z";
     } else if (cekimEki == "simZam") {
       return verb + "sunuz";
     } else if (cekimEki == "gelZam") {
-      let add = lastSesliHarf(verb) == "a" ? "ı" : "i";
       return verb + "s" + add + "n" + add + "z";
     } else if (cekimEki == "genZam") {
-      return verb + "s" + lastSesliHarf(verb) + "n" + lastSesliHarf(verb) + "z";
+      return verb + "s" + lsh + "n" + add + "z";
     } else if (cekimEki == "gerKip") {
-      return verb + "s" + lastSesliHarf(verb) + "n" + lastSesliHarf(verb) + "z";
+      return verb + "s" + lsh + "n" + add + "z";
     } else if (cekimEki == "dilKip") {
-      let add = lastSesliHarf(verb) == "a" ? "ı" : "i";
       return verb + "n" + add + "z";
     } else if (cekimEki == "istKip") {
-      let add = lastSesliHarf(verb) == "a" ? "ı" : "i";
       return verb + "n" + add + "z";
     } else if (cekimEki == "emrKip") {
       return verb;
     }
   case possessors[5]:
-    let add = multipleCheck(lastSesliHarf(verb), ["e", "ü", "i", "ö"]) ? "e" : "a";
+    let addM = multipleCheck(lsh, ["e", "ü", "i", "ö"]) ? "e" : "a";
     if (cekimEki == "emrKip") {
       return verb;
     } else {
-      return verb + "l" + add + "r";
+      return verb + "l" + addM + "r";
     }
   }
   return verb + "(plain)";
@@ -379,11 +366,15 @@ fiilArr.forEach((f) => {
   let haberEk = ["gorGecZam", "ogrGecZam", "simZam", "gelZam", "genZam"];
   let dilekEk = ["gerKip", "dilKip", "istKip", "emrKip"];
   haberEk.forEach((h) => {
-    console.log(addPossessive(fiilCek(f, h), "onlar", h));
+    possessors.forEach((p) => {
+      console.log(addPossessive(fiilCek(f, h), p, h));
+    });
   });
   console.log("----------");
   dilekEk.forEach((h) => {
-    console.log(addPossessive(fiilCek(f, h), "onlar", h));
+    possessors.forEach((p) => {
+      console.log(addPossessive(fiilCek(f, h), p, h));
+    });
   });
   console.log("----------");
 });
