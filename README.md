@@ -1,4 +1,4 @@
-# TVC - Turkish Verb Conjunction Tool
+# turconj - Turkish Verb Conjunction Tool
 
 A tool to conjunct Turkish verbs with given tence and possessive in nodejs.
 
